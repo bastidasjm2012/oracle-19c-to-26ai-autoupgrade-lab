@@ -1,0 +1,29 @@
+connect target /
+
+run {
+  allocate channel c1 device type disk;
+  allocate channel c2 device type disk;
+
+  sql 'alter system archive log current';
+
+  backup as compressed backupset database
+    format '/u01/backup/26ai_preupgrade/db_full_%d_%T_%U.bkp'
+    tag 'PREUPGRADE_19C_FULL_BACKUP';
+
+  backup as compressed backupset archivelog all
+    format '/u01/backup/26ai_preupgrade/arch_%d_%T_%U.bkp'
+    tag 'PREUPGRADE_19C_ARCH_BACKUP';
+
+  backup current controlfile
+    format '/u01/backup/26ai_preupgrade/controlfile_%d_%T_%U.bkp'
+    tag 'PREUPGRADE_19C_CONTROLFILE';
+
+  backup spfile
+    format '/u01/backup/26ai_preupgrade/spfile_%d_%T_%U.bkp'
+    tag 'PREUPGRADE_19C_SPFILE';
+
+  release channel c1;
+  release channel c2;
+}
+
+list backup summary;
