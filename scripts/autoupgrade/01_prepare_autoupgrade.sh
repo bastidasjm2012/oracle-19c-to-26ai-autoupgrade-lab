@@ -31,7 +31,3 @@ echo "Validate AutoUpgrade"
 -jar $AUTO_DIR/autoupgrade.jar \
 -version
 
-echo Resultado esperado:
-echo build.supported_target_versions
-
-echo 12.2,18,19,21,23,26
