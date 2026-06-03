@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Oracle 19c to Oracle AI Database 26ai Upgrade Dashboard</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 30px; background: #f5f7fa; color: #222; }
+h1 { color: #1f2937; }
+.card { background: white; border-radius: 10px; padding: 18px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.status-ok { color: #0f766e; font-weight: bold; }
+.status-warn { color: #b45309; font-weight: bold; }
+table { border-collapse: collapse; width: 100%; background: white; }
+th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+th { background: #111827; color: white; }
+code { background: #eef2ff; padding: 2px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Oracle Database 19c to Oracle AI Database 26ai Upgrade Dashboard</h1>
+
+<div class="card">
+<h2>Executive Summary</h2>
+<p>This dashboard summarizes the enterprise lab for upgrading Oracle Database 19c to Oracle AI Database 26ai using AutoUpgrade.</p>
+<p><strong>Final Target:</strong> Oracle Linux 8.10 + Oracle AI Database 26ai + NEXUSCDB/NEXUS PDB</p>
+</div>
+
+<div class="card">
+<h2>Phase Status</h2>
+<table>
+<tr><th>Phase</th><th>Description</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>1</td><td>Prechecks, RMAN backup, baseline</td><td class="status-ok">READY</td><td>evidence/phase01_prechecks_backup</td></tr>
+<tr><td>2</td><td>OL7.9 to OL8.10 with Leapp</td><td class="status-ok">READY</td><td>evidence/phase02_os_upgrade</td></tr>
+<tr><td>3</td><td>Non-CDB to CDB/PDB</td><td class="status-ok">READY</td><td>evidence/phase03_noncdb_to_pdb</td></tr>
+<tr><td>4</td><td>Oracle 26ai Home installation</td><td class="status-ok">READY</td><td>evidence/phase04_26ai_home_installation</td></tr>
+<tr><td>5</td><td>AutoUpgrade 19c to 26ai</td><td class="status-warn">EXECUTION PHASE</td><td>evidence/phase05_autoupgrade</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>Target Architecture</h2>
+<pre>
+Oracle Linux 8.10
+
+Oracle AI Database 26ai
+
+NEXUSCDB
+├── PDB$SEED
+└── NEXUS
+</pre>
+</div>
+
+<div class="card">
+<h2>Critical Controls</h2>
+<ul>
+<li>RMAN backup completed and validated before OS upgrade.</li>
+<li>Snapshot created before Leapp execution.</li>
+<li>Non-CDB converted to PDB before AutoUpgrade.</li>
+<li>Oracle 26ai installed in a new parallel Oracle Home.</li>
+<li>AutoUpgrade uses <code>restoration=YES</code> to create a Guaranteed Restore Point.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Important Commands</h2>
+<pre>
+java -jar /u01/app/oracle/autoupgrade/autoupgrade.jar -config /u01/app/oracle/autoupgrade/autoupg.cfg -mode analyze
+java -jar /u01/app/oracle/autoupgrade/autoupgrade.jar -config /u01/app/oracle/autoupgrade/autoupg.cfg -mode fixups
+java -jar /u01/app/oracle/autoupgrade/autoupgrade.jar -config /u01/app/oracle/autoupgrade/autoupg.cfg -mode deploy
+</pre>
+</div>
+
+</body>
+</html>
