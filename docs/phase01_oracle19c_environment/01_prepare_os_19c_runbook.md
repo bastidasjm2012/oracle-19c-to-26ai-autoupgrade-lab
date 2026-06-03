@@ -341,6 +341,12 @@ phase01_oracle19c_prepare/
 
 After successful validation create:
 
+sync
+
+sync
+
+shutdown -h now
+
 ```text
 Snapshot Name:
 
