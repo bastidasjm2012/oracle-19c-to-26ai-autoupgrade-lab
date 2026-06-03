@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 REPORT_DIR="/u01/stage/26ai/install_reports"
