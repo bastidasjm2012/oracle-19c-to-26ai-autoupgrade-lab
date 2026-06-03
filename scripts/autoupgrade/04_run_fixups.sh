@@ -10,3 +10,8 @@ java \
 -jar /u01/app/oracle/autoupgrade/autoupgrade.jar \
 -config /u01/app/oracle/autoupgrade/autoupg.cfg \
 -mode fixups
+
+echo Debe finalizar:
+echo PREFIXUPS
+
+echo SUCCESS
