@@ -42,25 +42,6 @@ from v$database;
 
 show parameter compatible
 
-prompt Resultado:
- prompt Oracle AI Database 26ai
-
- prompt NEXUSCDB
-
- prompt YES
-
-
- prompt PDB:
-
- prompt NEXUS
-
- prompt READ WRITE
-
-
- prompt Registry:
-
- prompt VALID
-
 
 
 
