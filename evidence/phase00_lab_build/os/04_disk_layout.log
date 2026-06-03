@@ -1,0 +1,8 @@
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda      8:0    0  160G  0 disk 
+├─sda1   8:1    0    2G  0 part /boot
+├─sda2   8:2    0   50G  0 part /
+├─sda3   8:3    0   16G  0 part [SWAP]
+├─sda4   8:4    0    1K  0 part 
+└─sda5   8:5    0   92G  0 part /u01
+sr0     11:0    1  4.5G  0 rom  /run/media/root/OL-7.9 Server.x86_64

@@ -1,0 +1,17 @@
+===== HOSTS FILE =====
+i127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.197.129 srvdb19c.localdomain srvdb19c
+
+===== HOST RESOLUTION =====
+PING srvdb19c.localdomain (192.168.197.129) 56(84) bytes of data.
+64 bytes from srvdb19c.localdomain (192.168.197.129): icmp_seq=1 ttl=64 time=0.087 ms
+64 bytes from srvdb19c.localdomain (192.168.197.129): icmp_seq=2 ttl=64 time=0.088 ms
+64 bytes from srvdb19c.localdomain (192.168.197.129): icmp_seq=3 ttl=64 time=0.093 ms
+
+--- srvdb19c.localdomain ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1999ms
+rtt min/avg/max/mdev = 0.087/0.089/0.093/0.008 ms
+
+===== IP =====
+192.168.197.129 192.168.122.1 

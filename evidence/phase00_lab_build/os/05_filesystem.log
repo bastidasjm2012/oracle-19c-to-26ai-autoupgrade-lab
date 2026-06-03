@@ -1,0 +1,10 @@
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        5.9G     0  5.9G   0% /dev
+tmpfs           5.9G     0  5.9G   0% /dev/shm
+tmpfs           5.9G  9.8M  5.9G   1% /run
+tmpfs           5.9G     0  5.9G   0% /sys/fs/cgroup
+/dev/sda2        50G  7.6G   43G  16% /
+/dev/sda5        92G   33M   92G   1% /u01
+/dev/sda1       2.0G  213M  1.8G  11% /boot
+tmpfs           1.2G   56K  1.2G   1% /run/user/0
+/dev/sr0        4.6G  4.6G     0 100% /run/media/root/OL-7.9 Server.x86_64

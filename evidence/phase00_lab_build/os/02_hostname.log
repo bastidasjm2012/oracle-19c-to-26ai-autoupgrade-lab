@@ -1,0 +1,10 @@
+   Static hostname: srvdb19c
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 63337a24fd134f80a9af71859a02f184
+           Boot ID: 48011b7a7b3740df95992e4f537bbcd3
+    Virtualization: vmware
+  Operating System: Oracle Linux Server 7.9
+       CPE OS Name: cpe:/o:oracle:linux:7:9:server
+            Kernel: Linux 3.10.0-1160.el7.x86_64
+      Architecture: x86-64
