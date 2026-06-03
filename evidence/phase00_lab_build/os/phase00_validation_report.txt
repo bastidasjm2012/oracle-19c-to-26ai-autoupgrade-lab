@@ -1,0 +1,31 @@
+PHASE 0 - ORACLE LINUX 7.9 BASELINE
+
+HOSTNAME:
+srvdb19c
+
+OS:
+Oracle Linux Server release 7.9
+
+KERNEL:
+3.10.0-1160.el7.x86_64
+
+CPU:
+4 cores
+
+RAM:
+12GB
+
+DISK:
+/boot 2GB
+/     50GB
+swap  16GB
+/u01  92GB
+
+NETWORK:
+ens33
+192.168.197.129
+
+STATUS:
+PASSED
+
+READY FOR ORACLE DATABASE 19C INSTALLATION
