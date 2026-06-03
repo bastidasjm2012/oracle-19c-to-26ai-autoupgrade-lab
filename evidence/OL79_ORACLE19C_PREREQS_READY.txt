@@ -1,0 +1,57 @@
+Snapshot Name:
+
+OL79_ORACLE19C_PREREQS_READY
+
+
+Date:
+
+Wed Jun  3 16:51:30 -05 2026
+
+
+Environment:
+
+Oracle Linux Server 7.9
+
+
+Hostname:
+
+srvdb19c
+
+
+Oracle Preparation Status:
+
+COMPLETED
+
+
+Installed:
+
+oracle-database-preinstall-19c
+
+
+Oracle User:
+
+uid=54321(oracle) gid=54321(oinstall) groups=54321(oinstall),54322(dba),54323(oper),54324(backupdba),54325(dgdba),54326(kmdba),54330(racdba)
+
+
+Oracle Environment:
+
+ORACLE_BASE=/u01/app/oracle
+
+ORACLE_HOME=/u01/app/oracle/product/19/db_1
+
+ORACLE_SID=NEXUS
+
+
+Database:
+
+NEXUS
+
+
+Current Status:
+
+Ready for Oracle Database 19c Software Installation
+
+
+Rollback Purpose:
+
+Restore point before installing Oracle binaries
