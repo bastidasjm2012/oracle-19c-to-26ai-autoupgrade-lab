@@ -1,0 +1,6 @@
+================
+total 8
+drwxrwx---. 2 oracle oinstall   81 Jun  3 18:14 ContentsXML
+-rwxrwx---. 1 oracle oinstall 1617 Jun  3 18:14 orainstRoot.sh
+-rw-rw----. 1 oracle oinstall   56 Jun  3 18:14 oraInst.loc
+drwxrwx---. 3 oracle oinstall   49 Jun  3 18:14 logs
