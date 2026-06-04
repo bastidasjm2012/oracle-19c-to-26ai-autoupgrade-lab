@@ -1,0 +1,54 @@
+Snapshot Name:
+
+NEXUS_NONCDB_CREATED
+
+
+Oracle Linux:
+
+7.9
+
+
+Oracle Database:
+
+19c Enterprise Edition
+
+
+Database:
+
+NEXUS
+
+
+Architecture:
+
+NON-CDB
+
+
+Mode:
+
+READ WRITE
+
+
+ArchiveLog:
+
+Enabled
+
+
+Force Logging:
+
+Enabled
+
+
+Compatible:
+
+19.0.0
+
+
+Created Before:
+
+RMAN Baseline Backup
+NON-CDB to PDB Conversion
+
+
+Rollback:
+
+AVAILABLE
