@@ -1,0 +1,38 @@
+==========================================================
+ PHASE 02 - ORACLE DATABASE 19C SOFTWARE INSTALLATION
+ Date: Wed Jun  3 18:06:00 -05 2026
+ Hostname: srvdb19c
+==========================================================
+
+### Validate software zip
+-rw-r--r--. 1 oracle oinstall 2.9G Jun  3 17:28 /u01/software/19c/LINUX.X64_193000_db_home.zip
+
+### Validate Oracle Home
+drwxrwxr-x. 69 oracle oinstall 4096 Jun  3 17:58 /u01/app/oracle/product/19/db_1
+
+### Unzip Oracle 19c software into ORACLE_HOME
+
+### Execute runInstaller silent
+Launching Oracle Database Setup Wizard...
+
+The response file for this session can be found at:
+ /u01/app/oracle/product/19/db_1/install/response/db_2026-06-03_06-12-27PM.rsp
+
+You can find the log of this install session at:
+ /tmp/InstallActions2026-06-03_06-12-27PM/installActions2026-06-03_06-12-27PM.log
+
+As a root user, execute the following script(s):
+	1. /u01/app/oracle/product/19/db_1/root.sh
+
+Execute /u01/app/oracle/product/19/db_1/root.sh on the following nodes: 
+[srvdb19c]
+
+
+Successfully Setup Software.
+Moved the install session logs to:
+ /u01/app/oraInventory/logs/InstallActions2026-06-03_06-12-27PM
+
+==========================================================
+ INSTALLER COMPLETED
+ IMPORTANT: Run root scripts manually as root if requested
+==========================================================
