@@ -1,0 +1,247 @@
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt CREATE APPLICATION SCHEMAS
+CREATE APPLICATION SCHEMAS
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> create user APP_CORE
+  2  identified by Oracle123
+  3  default tablespace USERS
+  4  quota unlimited on USERS;
+
+User created.
+
+Elapsed: 00:00:00.13
+SQL>
+SQL>
+SQL> create user APP_AUDIT
+  2  identified by Oracle123
+  3  default tablespace USERS
+  4  quota unlimited on USERS;
+
+User created.
+
+Elapsed: 00:00:00.03
+SQL>
+SQL>
+SQL>
+SQL> grant connect, resource to APP_CORE;
+
+Grant succeeded.
+
+Elapsed: 00:00:00.01
+SQL>
+SQL> grant connect, resource to APP_AUDIT;
+
+Grant succeeded.
+
+Elapsed: 00:00:00.01
+SQL>
+SQL>
+SQL>
+SQL> grant create view,
+  2        create procedure,
+  3        create sequence
+  4  to APP_CORE;
+
+Grant succeeded.
+
+Elapsed: 00:00:00.01
+SQL>
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt CREATE TABLES
+CREATE TABLES
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> create table APP_CORE.CUSTOMERS
+  2  (
+  3  CUSTOMER_ID number primary key,
+  4  FIRST_NAME varchar2(100),
+  5  LAST_NAME varchar2(100),
+  6  EMAIL varchar2(200),
+  7  CREATED_DATE date
+  8  );
+
+Table created.
+
+Elapsed: 00:00:00.07
+SQL>
+SQL>
+SQL>
+SQL> create table APP_CORE.ORDERS
+  2  (
+  3  ORDER_ID number primary key,
+  4  CUSTOMER_ID number,
+  5  ORDER_DATE date,
+  6  AMOUNT number(10,2),
+  7  constraint FK_ORDER_CUSTOMER
+  8  foreign key (CUSTOMER_ID)
+  9  references APP_CORE.CUSTOMERS(CUSTOMER_ID)
+ 10  );
+
+Table created.
+
+Elapsed: 00:00:00.02
+SQL>
+SQL>
+SQL>
+SQL> create table APP_AUDIT.ACTIVITY_LOG
+  2  (
+  3  LOG_ID number primary key,
+  4  ACTION varchar2(200),
+  5  CREATED_DATE date
+  6  );
+
+Table created.
+
+Elapsed: 00:00:00.02
+SQL>
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt SEQUENCES
+SEQUENCES
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> create sequence APP_CORE.SEQ_CUSTOMERS;
+
+Sequence created.
+
+Elapsed: 00:00:00.01
+SQL>
+SQL> create sequence APP_CORE.SEQ_ORDERS;
+
+Sequence created.
+
+Elapsed: 00:00:00.00
+SQL>
+SQL> create sequence APP_AUDIT.SEQ_LOG;
+
+Sequence created.
+
+Elapsed: 00:00:00.01
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt PROCEDURE
+PROCEDURE
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> create or replace procedure APP_CORE.ADD_CUSTOMER
+  2  (
+  3  p_name varchar2
+  4  )
+  5  as
+  6  begin
+  7
+  8  insert into APP_CORE.CUSTOMERS
+  9  values
+ 10  (
+ 11  APP_CORE.SEQ_CUSTOMERS.nextval,
+ 12  p_name,
+ 13  'TEST',
+ 14  p_name||'@demo.com',
+ 15  sysdate
+ 16  );
+ 17
+ 18  commit;
+ 19
+ 20  end;
+ 21  /
+
+Procedure created.
+
+Elapsed: 00:00:00.08
+SQL>
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt INSERT DATA
+INSERT DATA
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> begin
+  2
+  3  for i in 1..10000 loop
+  4
+  5
+  6  APP_CORE.ADD_CUSTOMER('CUSTOMER_'||i);
+  7
+  8
+  9  end loop;
+ 10
+ 11
+ 12  commit;
+ 13
+ 14
+ 15  end;
+ 16  /
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.03
+SQL>
+SQL>
+SQL>
+SQL> insert into APP_CORE.ORDERS
+  2  select
+  3  level,
+  4  level,
+  5  sysdate,
+  6  dbms_random.value(10,5000)
+  7  from dual
+  8  connect by level <=10000;
+
+10000 rows created.
+
+Elapsed: 00:00:00.24
+SQL>
+SQL>
+SQL> commit;
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+SQL>
+SQL>
+SQL>
+SQL> prompt ===================================
+===================================
+SQL> prompt GATHER STATISTICS
+GATHER STATISTICS
+SQL> prompt ===================================
+===================================
+SQL>
+SQL>
+SQL> exec dbms_stats.gather_schema_stats('APP_CORE');
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.38
+SQL>
+SQL> exec dbms_stats.gather_schema_stats('APP_AUDIT');
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.11
+SQL>
+SQL>
+SQL> spool off
