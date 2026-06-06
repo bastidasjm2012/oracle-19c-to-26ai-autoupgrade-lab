@@ -1,0 +1,107 @@
+
+
+Recovery Manager: Release 19.0.0.0.0 - Production on Thu Jun 4 16:44:14 2026
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: NEXUS (DBID=1784381842)
+
+RMAN>
+using target database control file instead of recovery catalog
+new RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+new RMAN configuration parameters are successfully stored
+
+RMAN>
+RMAN> 2> 3> 4>
+Starting backup at 04-JUN-26
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=399 device type=DISK
+channel ORA_DISK_1: starting compressed full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+input datafile file number=00001 name=/u01/app/oracle/oradata/NEXUS/system01.dbf
+input datafile file number=00003 name=/u01/app/oracle/oradata/NEXUS/sysaux01.dbf
+input datafile file number=00004 name=/u01/app/oracle/oradata/NEXUS/undotbs01.dbf
+input datafile file number=00007 name=/u01/app/oracle/oradata/NEXUS/users01.dbf
+channel ORA_DISK_1: starting piece 1 at 04-JUN-26
+channel ORA_DISK_1: finished piece 1 at 04-JUN-26
+piece handle=/u01/backup/NEXUS/db_014pr332_1_1.bkp tag=PHASE04_NEXUS_BASELINE_DB comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:01:05
+Finished backup at 04-JUN-26
+
+Starting Control File and SPFILE Autobackup at 04-JUN-26
+piece handle=/u01/app/oracle/fast_recovery_area/NEXUS/autobackup/2026_06_04/o1_mf_s_1235061923_o23whmom_.bkp comment=NONE
+Finished Control File and SPFILE Autobackup at 04-JUN-26
+
+RMAN>
+RMAN> 2> 3> 4>
+Starting backup at 04-JUN-26
+current log archived
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting compressed archived log backup set
+channel ORA_DISK_1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=5 RECID=1 STAMP=1235061933
+channel ORA_DISK_1: starting piece 1 at 04-JUN-26
+channel ORA_DISK_1: finished piece 1 at 04-JUN-26
+piece handle=/u01/backup/NEXUS/arch_034pr35d_1_1.bkp tag=PHASE04_NEXUS_BASELINE_ARCH comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:07
+Finished backup at 04-JUN-26
+
+Starting Control File and SPFILE Autobackup at 04-JUN-26
+piece handle=/u01/app/oracle/fast_recovery_area/NEXUS/autobackup/2026_06_04/o1_mf_s_1235061940_o23wj4yh_.bkp comment=NONE
+Finished Control File and SPFILE Autobackup at 04-JUN-26
+
+RMAN>
+RMAN> 2> 3>
+Starting backup at 04-JUN-26
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+including current control file in backup set
+channel ORA_DISK_1: starting piece 1 at 04-JUN-26
+channel ORA_DISK_1: finished piece 1 at 04-JUN-26
+piece handle=/u01/backup/NEXUS/control_054pr35m_1_1.bkp tag=PHASE04_NEXUS_BASELINE_CTL comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 04-JUN-26
+
+Starting Control File and SPFILE Autobackup at 04-JUN-26
+piece handle=/u01/app/oracle/fast_recovery_area/NEXUS/autobackup/2026_06_04/o1_mf_s_1235061944_o23wj8kn_.bkp comment=NONE
+Finished Control File and SPFILE Autobackup at 04-JUN-26
+
+RMAN>
+RMAN> 2> 3>
+Starting backup at 04-JUN-26
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+including current SPFILE in backup set
+channel ORA_DISK_1: starting piece 1 at 04-JUN-26
+channel ORA_DISK_1: finished piece 1 at 04-JUN-26
+piece handle=/u01/backup/NEXUS/spfile_074pr35p_1_1.bkp tag=PHASE04_NEXUS_BASELINE_SPFILE comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 04-JUN-26
+
+Starting Control File and SPFILE Autobackup at 04-JUN-26
+piece handle=/u01/app/oracle/fast_recovery_area/NEXUS/autobackup/2026_06_04/o1_mf_s_1235061946_o23wjc29_.bkp comment=NONE
+Finished Control File and SPFILE Autobackup at 04-JUN-26
+
+RMAN>
+RMAN>
+
+List of Backups
+===============
+Key     TY LV S Device Type Completion Time #Pieces #Copies Compressed Tag
+------- -- -- - ----------- --------------- ------- ------- ---------- ---
+1       B  F  A DISK        04-JUN-26       1       1       YES        PHASE04_NEXUS_BASELINE_DB
+2       B  F  A DISK        04-JUN-26       1       1       NO         TAG20260604T164523
+3       B  A  A DISK        04-JUN-26       1       1       YES        PHASE04_NEXUS_BASELINE_ARCH
+4       B  F  A DISK        04-JUN-26       1       1       NO         TAG20260604T164540
+5       B  F  A DISK        04-JUN-26       1       1       NO         PHASE04_NEXUS_BASELINE_CTL
+6       B  F  A DISK        04-JUN-26       1       1       NO         TAG20260604T164544
+7       B  F  A DISK        04-JUN-26       1       1       NO         PHASE04_NEXUS_BASELINE_SPFILE
+8       B  F  A DISK        04-JUN-26       1       1       NO         TAG20260604T164546
+
+RMAN>
+RMAN>
+
