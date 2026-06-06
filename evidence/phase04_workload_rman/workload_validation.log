@@ -1,0 +1,91 @@
+=====================================
+WORKLOAD OBJECT VALIDATION
+=====================================
+
+OWNER
+--------------------------------------------------------------------------------
+OBJECT_TYPE             TOTAL_OBJECTS
+----------------------- -------------
+APP_AUDIT
+INDEX                               1
+
+APP_AUDIT
+SEQUENCE                            1
+
+APP_AUDIT
+TABLE                               1
+
+APP_CORE
+INDEX                               2
+
+APP_CORE
+PROCEDURE                           1
+
+APP_CORE
+SEQUENCE                            2
+
+APP_CORE
+TABLE                               2
+
+
+7 rows selected.
+
+Elapsed: 00:00:00.07
+=====================================
+INVALID OBJECTS VALIDATION
+=====================================
+
+no rows selected
+
+Elapsed: 00:00:00.05
+=====================================
+ROW COUNT VALIDATION
+=====================================
+
+TABLE_NAME             TOTAL_ROWS
+---------------------- ----------
+APP_CORE.CUSTOMERS          10000
+APP_CORE.ORDERS             10000
+APP_AUDIT.ACTIVITY_LOG          0
+
+Elapsed: 00:00:00.00
+=====================================
+CONSTRAINT VALIDATION
+=====================================
+
+OWNER
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME
+--------------------------------------------------------------------------------
+C
+-
+TABLE_NAME
+--------------------------------------------------------------------------------
+STATUS   VALIDATED
+-------- -------------
+APP_AUDIT
+SYS_C007540
+P
+ACTIVITY_LOG
+ENABLED  VALIDATED
+
+APP_CORE
+SYS_C007537
+P
+CUSTOMERS
+ENABLED  VALIDATED
+
+APP_CORE
+FK_ORDER_CUSTOMER
+R
+ORDERS
+ENABLED  VALIDATED
+
+APP_CORE
+SYS_C007538
+P
+ORDERS
+ENABLED  VALIDATED
+
+
+Elapsed: 00:00:00.58
