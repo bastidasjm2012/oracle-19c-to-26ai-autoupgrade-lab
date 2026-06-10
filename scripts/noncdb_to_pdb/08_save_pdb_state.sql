@@ -1,5 +1,7 @@
-set lines 220 pages 1000 trimspool on
-spool /u01/stage/26ai/noncdb_to_pdb/08_save_pdb_state.log
+set lines 200
+set pages 200
+
+spool /u01/evidence/phase05_noncdb_to_pdb/05_plug_nexus_as_pdb.log
 
 alter pluggable database NEXUS save state;
 
@@ -8,3 +10,4 @@ select con_name,
 from dba_pdb_saved_states;
 
 spool off
+exit
