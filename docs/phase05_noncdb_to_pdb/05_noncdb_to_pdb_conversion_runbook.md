@@ -6,238 +6,218 @@ Oracle Database 19c to Oracle AI Database 26ai Upgrade Lab using AutoUpgrade Uti
 
 ---
 
-# Objective
+## Objective
 
-Convert the legacy Oracle Database 19c Non-CDB architecture into the required Multitenant architecture before upgrading to Oracle AI Database 26ai.
+Convert the legacy Oracle Database 19c Non-CDB architecture into Oracle Multitenant architecture.
 
-Oracle Database 26ai requires the Multitenant architecture, therefore existing Non-CDB databases must be converted into Pluggable Databases.
+Oracle AI Database 26ai only supports the Multitenant architecture, therefore the legacy Non-CDB database must be converted into a Pluggable Database (PDB) before executing AutoUpgrade.
 
 ---
 
 # Architecture Overview
 
-
 ## Before Conversion
 
-
 ```text
-Oracle Database 19c
+Oracle Database 19c Enterprise Edition
 
+Database:
 NEXUS
 
 Architecture:
-
 NON-CDB
 
-
-Application:
+Application Schemas:
 
 APP_CORE
-
 APP_AUDIT
 ```
 
+---
 
 ## After Conversion
 
-
 ```text
-Oracle Database 19c
+Oracle Database 19c Enterprise Edition
+
+Container Database:
 
 NEXUSCDB
-     |
-     |
-     +--- PDB NEXUS
-              |
-              |
-              +--- APP_CORE
-              |
-              +--- APP_AUDIT
+
+
+        NEXUSCDB
+            |
+            |
+            +---- NEXUS PDB
+                     |
+                     |
+                     +---- APP_CORE
+                     |
+                     +---- APP_AUDIT
 ```
 
 ---
 
-# Conversion Method
+# Conversion Strategy
 
-
-The migration uses the Oracle supported method:
-
+The conversion follows the Oracle recommended approach:
 
 ```text
-DBMS_PDB.DESCRIBE
+1. Validate Non-CDB source
 
-CREATE PLUGGABLE DATABASE
+2. Generate XML metadata file
 
-noncdb_to_pdb.sql
+       DBMS_PDB.DESCRIBE
+
+3. Create destination CDB
+
+       DBCA Silent
+
+4. Check plug compatibility
+
+       DBMS_PDB.CHECK_PLUG_COMPATIBILITY
+
+5. Plug database as PDB
+
+       CREATE PLUGGABLE DATABASE
+
+6. Convert dictionary
+
+       noncdb_to_pdb.sql
+
+7. Validate application
+
+8. Save PDB State
 ```
-
 
 ---
 
-# Environment Information
-
+# Environment
 
 | Component | Value |
 |---|---|
 | Source Database | NEXUS |
-| Source Architecture | Non-CDB |
+| Source Type | Non-CDB |
 | Target CDB | NEXUSCDB |
 | Target PDB | NEXUS |
 | Oracle Version | 19.3 |
+| OS | Oracle Linux 7.9 |
 | Upgrade Target | Oracle AI Database 26ai |
-
 
 ---
 
-# Phase Workflow
-
+# Repository Structure
 
 ```text
-NEXUS Non-CDB
+scripts/
 
-        |
-        |
-        v
+└── noncdb_to_pdb/
 
-Precheck Validation
-
-
-        |
-        |
-        v
-
-
-DBMS_PDB.DESCRIBE
-
-
-        |
-        |
-        v
-
-
-NEXUS.xml
-
-
-        |
-        |
-        v
-
-
-CREATE PLUGGABLE DATABASE
-
-
-        |
-        |
-        v
-
-
-Run noncdb_to_pdb.sql
-
-
-        |
-        |
-        v
-
-
-NEXUS PDB Ready
+    ├── 01_noncdb_precheck.sql
+    ├── 02_create_nexus_xml.sql
+    ├── 03_create_nexuscdb.sh
+    ├── 04_check_plug_compatibility.sql
+    ├── 05_plug_nexus_as_pdb.sql
+    ├── 06_run_noncdb_to_pdb.sql
+    ├── 07_validate_nexus_pdb.sql
+    └── 08_save_pdb_state.sql
 ```
 
 ---
 
 # Step 01 - Non-CDB Precheck
 
-
-Script:
-
+## Script
 
 ```text
-scripts/noncdb_to_pdb/
-
 01_noncdb_precheck.sql
 ```
 
-
-Validates:
-
+Validations:
 
 - Database status
-- Non-CDB architecture
-- Application objects
+- Open mode
+- Database role
+- CDB flag
+- Application schemas
 - Invalid objects
 - ArchiveLog status
 
 
 Expected:
 
-
 ```text
 Database:
 
 NEXUS
 
-
 CDB:
 
 NO
 
+OPEN MODE:
+
+READ WRITE
 
 Invalid Objects:
 
 0
 ```
 
+Evidence:
+
+```text
+01_noncdb_precheck.log
+```
+
 ---
 
 # Step 02 - Generate XML Manifest
 
-
-Script:
-
+## Script
 
 ```text
 02_create_nexus_xml.sql
 ```
 
-
-The database is opened READ ONLY:
-
+Database is started:
 
 ```sql
 startup open read only;
 ```
 
-
-Generate XML:
-
+Generate metadata:
 
 ```sql
 BEGIN
 
 DBMS_PDB.DESCRIBE
 (
-pdb_descr_file =>
-'/u01/stage/phase05_noncdb_to_pdb/NEXUS.xml'
+ pdb_descr_file =>
+ '/u01/stage/phase05_noncdb_to_pdb/NEXUS.xml'
 );
 
 END;
 /
 ```
 
-
-Output:
-
+Generated file:
 
 ```text
-NEXUS.xml
+/u01/stage/phase05_noncdb_to_pdb/NEXUS.xml
+```
+
+Evidence:
+
+```text
+02_create_nexus_xml.log
 ```
 
 ---
 
 # Step 03 - Create Target CDB
 
-
-Script:
-
+## Script
 
 ```text
 03_create_nexuscdb.sh
@@ -246,9 +226,8 @@ Script:
 
 Creates:
 
-
 ```text
-CDB:
+Container Database:
 
 NEXUSCDB
 ```
@@ -256,34 +235,41 @@ NEXUSCDB
 
 Using:
 
-
 ```text
 DBCA Silent Mode
 ```
 
+Parameters:
+
+```text
+createAsContainerDatabase=true
+
+numberOfPDBs=0
+```
+
+Evidence:
+
+```text
+03_create_nexuscdb.log
+```
+
 ---
 
-# Step 04 - Plug Compatibility Check
+# Step 04 - Check Plug Compatibility
 
-
-Script:
-
+## Script
 
 ```text
 04_check_plug_compatibility.sql
 ```
 
-
 Uses:
-
 
 ```sql
 DBMS_PDB.CHECK_PLUG_COMPATIBILITY
 ```
 
-
 Expected:
-
 
 ```text
 RESULT:
@@ -291,82 +277,120 @@ RESULT:
 COMPATIBLE
 ```
 
+Review:
+
+```sql
+select *
+from pdb_plug_in_violations;
+```
+
+Evidence:
+
+```text
+04_check_plug_compatibility.log
+```
+
 ---
 
-# Step 05 - Create PDB NEXUS
+# Step 05 - Plug NEXUS as PDB
 
-
-Script:
-
+## Script
 
 ```text
 05_plug_nexus_as_pdb.sql
 ```
 
 
-Command:
-
+Creates:
 
 ```sql
 CREATE PLUGGABLE DATABASE NEXUS
-
 USING 'NEXUS.xml'
-
 COPY;
 ```
 
 
-Initial state:
-
+Initial status:
 
 ```text
+NEXUS
+
 OPEN RESTRICTED
+```
+
+Evidence:
+
+```text
+05_plug_nexus_as_pdb.log
 ```
 
 ---
 
-# Step 06 - Convert Dictionary
+# Step 06 - Execute noncdb_to_pdb.sql
 
-
-Script:
-
+## Script
 
 ```text
 06_run_noncdb_to_pdb.sql
 ```
 
 
-Runs:
-
+Connect:
 
 ```sql
-$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+alter session set container=NEXUS;
 ```
 
 
-Purpose:
+Execute:
+
+```sql
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+```
 
 
-- Remove Non-CDB metadata
-- Convert dictionary
-- Enable Multitenant compatibility
+This performs:
 
+- Dictionary conversion
+- Metadata cleanup
+- Component validation
+- Multitenant enablement
+
+
+Expected:
+
+```text
+NEXUS
+
+READ WRITE
+```
+
+Evidence:
+
+```text
+06_run_noncdb_to_pdb.log
+```
 
 ---
 
-# Step 07 - Final Validation
+# Step 07 - Validate Converted PDB
 
-
-Script:
-
+## Script
 
 ```text
 07_validate_nexus_pdb.sql
 ```
 
+Validates:
 
-Expected result:
+- PDB status
+- Application schemas
+- Object count
+- Invalid objects
+- Application data
 
+
+Expected:
 
 ```text
 CDB:
@@ -386,125 +410,187 @@ READ WRITE
 
 APP_CORE.CUSTOMERS:
 
-10000 rows
+10000
 
 
 APP_CORE.ORDERS:
 
-10000 rows
+10000
 
 
-Invalid Objects:
+INVALID OBJECTS:
 
 0
 ```
 
+Evidence:
+
+```text
+07_validate_nexus_pdb.log
+```
+
 ---
 
-# Evidence Generated
+# Step 08 - Save PDB State
+
+## Script
+
+```text
+08_save_pdb_state.sql
+```
+
+
+Purpose:
+
+Configure automatic PDB opening after CDB restart.
+
+Without this configuration, after restarting the CDB the PDB remains mounted.
+
+
+Execute:
+
+```sql
+alter pluggable database NEXUS save state;
+```
+
+
+Validate:
+
+```sql
+select
+ con_name,
+ state
+from dba_pdb_saved_states;
+```
+
+
+Expected:
+
+```text
+CON_NAME     STATE
+------------ --------
+
+NEXUS        OPEN
+```
+
+
+Evidence:
+
+```text
+08_save_pdb_state.log
+```
+
+---
+
+# Evidence Structure
 
 
 ```text
-phase05_noncdb_to_pdb/
+evidence/
 
-├── 01_noncdb_precheck.log
-├── 02_create_nexus_xml.log
-├── 03_create_nexuscdb.log
-├── 04_check_plug_compatibility.log
-├── 05_plug_nexus_as_pdb.log
-├── 06_run_noncdb_to_pdb.log
-└── 07_validate_nexus_pdb.log
+└── phase05_noncdb_to_pdb/
+
+    ├── README.md
+    |
+    ├── 01_noncdb_precheck.log
+    ├── 02_create_nexus_xml.log
+    ├── 03_create_nexuscdb.log
+    ├── 04_check_plug_compatibility.log
+    ├── 05_plug_nexus_as_pdb.log
+    ├── 06_run_noncdb_to_pdb.log
+    ├── 07_validate_nexus_pdb.log
+    └── 08_save_pdb_state.log
+
 ```
 
 ---
 
 # Rollback Strategy
 
-
 Available rollback points:
 
+## VMware Snapshot
 
-## VMware Snapshot Before Conversion
-
+Before conversion:
 
 ```text
 NEXUS_WORKLOAD_RMAN_BASELINE
 ```
 
 
-## RMAN Backup
-
-
-Includes:
-
-
-```text
-Database
-
-ArchiveLogs
-
-Controlfile
-
-SPFILE
-```
-
----
-
-# VMware Snapshot After Conversion
-
-
-Name:
-
+After successful conversion:
 
 ```text
 NEXUS_CONVERTED_TO_PDB
 ```
 
 
-Contains:
+---
+
+# Final Architecture
 
 
 ```text
-Oracle 19c
+Oracle Database 19c
 
-CDB:
+
 NEXUSCDB
 
+   |
+   |
+   +---- NEXUS PDB
 
-PDB:
-NEXUS
+          |
+          |
+
+          APP_CORE
+
+          APP_AUDIT
 
 
-Application:
 
-APP_CORE
+Status:
 
-APP_AUDIT
+READ WRITE
+
+
+Save State:
+
+ENABLED
+
+
+Ready:
+
+AutoUpgrade
+Oracle Database AI 26ai
+
 ```
 
 ---
 
-# GO / NO-GO Checklist
+# Validation Checklist
 
 
 | Validation | Status |
 |---|---|
+| Non-CDB validated | PASSED |
 | XML generated | PASSED |
 | CDB created | PASSED |
-| Compatibility checked | PASSED |
+| Plug compatibility checked | PASSED |
 | PDB created | PASSED |
 | noncdb_to_pdb.sql completed | PASSED |
+| Application schemas validated | PASSED |
 | Application data validated | PASSED |
-| Snapshot created | PASSED |
-
+| PDB save state configured | PASSED |
+| VMware snapshot created | PASSED |
 
 ---
 
-# Final Decision
+# GO / NO-GO Decision
 
 
 ```text
-=====================================
+====================================
 
 PHASE 05 RESULT:
 
@@ -517,6 +603,5 @@ Phase 06
 
 PDB Health Check & Upgrade Readiness
 
-
-=====================================
+====================================
 ```
