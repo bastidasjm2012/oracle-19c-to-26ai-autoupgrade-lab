@@ -1,0 +1,32 @@
+Oracle Linux 7.9
+
+Oracle Database 19c Enterprise Edition
+
+Database:
+NEXUS
+
+Architecture:
+NON-CDB
+
+Status:
+READ WRITE
+
+ArchiveLog:
+Enabled
+
+Force Logging:
+Enabled
+
+Application schemas:
+APP_CORE
+APP_AUDIT
+
+Data:
+APP_CORE.CUSTOMERS = 10000 rows
+APP_CORE.ORDERS    = 10000 rows
+
+RMAN Baseline:
+Completed
+
+Ready for:
+Non-CDB to PDB conversion
