@@ -76,12 +76,14 @@ show parameter db_unique_name
 show parameter local_listener
 show parameter remote_listener
 
+archive log list;
+
 prompt ============================================================
 prompt VALIDATION RULE
 prompt CDB column must be NO before conversion.
 prompt ============================================================
 
-archive log list;
+
 
 spool off
 exit
